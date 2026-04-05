@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Smart Career Advisor AI</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- ── Header ────────────────────────────────────────────────────────── -->
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">🎯</span>
+                <div>
+                    <h1 class="logo-title">Smart Career Advisor</h1>
+                    <p class="logo-sub">AI-Powered by Groq · Resume · Job Matching · Career Growth</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ── Hero ──────────────────────────────────────────────────────────── -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-badge">✨ Powered by Groq LLaMA AI</div>
+        <h2 class="hero-title">Supercharge Your Job Search with AI</h2>
+        <p class="hero-desc">Upload your resume and paste a job description. Our AI analyzes your skill match, identifies gaps, and gives you personalized career guidance, project ideas, and a learning roadmap.</p>
+        <div class="hero-stats">
+            <div class="stat"><span class="stat-num">200+</span><span class="stat-label">Skills Detected</span></div>
+            <div class="stat"><span class="stat-num">4</span><span class="stat-label">AI Features</span></div>
+            <div class="stat"><span class="stat-num">PDF/DOCX/TXT</span><span class="stat-label">Supported</span></div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Error Banner ───────────────────────────────────────────────────── -->
+<div th:if="${error}" class="container" style="margin-top:1rem;">
+    <div class="alert alert-error">
+        <span>⚠️</span>
+        <span th:text="${error}"></span>
+    </div>
+</div>
+
+<!-- ── Upload Form ────────────────────────────────────────────────────── -->
+<main class="container main-content">
+    <form th:action="@{/analyze}" method="post" enctype="multipart/form-data" id="uploadForm">
+
+        <div class="upload-grid">
+
+            <!-- Resume Upload -->
+            <div class="card upload-card">
+                <div class="card-header">
+                    <span class="card-icon">📄</span>
+                    <div>
+                        <h3 class="card-title">Your Resume</h3>
+                        <p class="card-sub">PDF, DOCX formats supported</p>
+                    </div>
+                </div>
+                <div class="drop-zone" id="resumeDropZone" onclick="document.getElementById('resumeFile').click()">
+                    <div class="drop-zone-content" id="resumeContent">
+                        <div class="drop-icon">📂</div>
+                        <p class="drop-title">Click or drag &amp; drop</p>
+                        <p class="drop-sub">PDF or DOCX · Max 20MB</p>
+                    </div>
+                </div>
+                <input type="file" id="resumeFile" name="resumeFile" accept=".pdf,.docx" class="hidden-input" required/>
+                <div class="file-info hidden" id="resumeInfo"></div>
+            </div>
+
+            <!-- Job Description -->
+            <div class="card upload-card">
+                <div class="card-header">
+                    <span class="card-icon">💼</span>
+                    <div>
+                        <h3 class="card-title">Job Description</h3>
+                        <p class="card-sub">Upload file or paste text below</p>
+                    </div>
+                </div>
+                <div class="drop-zone" id="jdDropZone" onclick="document.getElementById('jdFile').click()">
+                    <div class="drop-zone-content" id="jdContent">
+                        <div class="drop-icon">📋</div>
+                        <p class="drop-title">Click or drag &amp; drop</p>
+                        <p class="drop-sub">PDF, DOCX or TXT · Optional if pasting below</p>
+                    </div>
+                </div>
+                <input type="file" id="jdFile" name="jdFile" accept=".pdf,.docx,.txt" class="hidden-input"/>
+                <div class="file-info hidden" id="jdInfo"></div>
+
+                <div class="or-divider"><span>OR</span></div>
+
+                <textarea name="jdText" id="jdText" class="jd-textarea"
+                          placeholder="Paste the job description here... (if no file uploaded)"
+                          rows="6"></textarea>
+            </div>
+        </div>
+
+        <!-- Tips -->
+        <div class="tips-row">
+            <div class="tip">💡 <strong>Tip:</strong> Use a tailored resume for best results</div>
+            <div class="tip">🔒 <strong>Private:</strong> Your files are never stored on our servers</div>
+            <div class="tip">🤖 <strong>AI:</strong> Groq LLaMA analyzes your profile in seconds</div>
+        </div>
+
+        <!-- Submit -->
+        <div class="submit-area">
+            <button type="submit" class="btn-primary btn-large" id="analyzeBtn">
+                <span id="btnText">🚀 Analyze My Career Fit</span>
+                <span id="btnLoading" class="hidden">⏳ Analyzing... Please wait</span>
+            </button>
+            <p class="submit-note">Analysis takes 5–15 seconds · AI recommendations may take a bit longer</p>
+        </div>
+    </form>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <h2 class="section-title">What You Get</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Skill Match Score</h3>
+                <p>Instant percentage match between your resume and the job description with detailed breakdown.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h3>Gap Analysis</h3>
+                <p>Identifies exactly which skills you have, which are missing, and which extras you bring.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">✨</div>
+                <h3>Resume Enhancement</h3>
+                <p>AI rewrites your resume bullets and summary to better match the target role.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💡</div>
+                <h3>Project Ideas</h3>
+                <p>3 personalized, portfolio-worthy project ideas tailored to your skills and target role.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🗺️</div>
+                <h3>Learning Roadmap</h3>
+                <p>Week-by-week plan to acquire missing skills with curated free resources.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Career Guidance</h3>
+                <p>Personalized strategy for applying, interviewing, and positioning yourself for the role.</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- ── Footer ─────────────────────────────────────────────────────────── -->
+<footer class="footer">
+    <div class="container">
+        <p>Smart Career Advisor · Powered by Groq LLaMA AI · Built with Spring Boot &amp; Thymeleaf</p>
+    </div>
+</footer>
+
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

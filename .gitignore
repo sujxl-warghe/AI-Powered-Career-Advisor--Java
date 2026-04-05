@@ -1,0 +1,65 @@
+# Maven target folder
+
+target/
+
+# Logs
+
+*.log
+logs/
+
+# Temporary files
+
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# IDE files
+
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# OS files
+
+.DS_Store
+Thumbs.db
+
+# Environment / secrets
+
+.env
+.env.*
+application-local.properties
+application-secret.properties
+
+# API keys / config overrides
+
+src/main/resources/application.properties
+
+# Uploaded resumes / generated files
+
+uploads/
+temp/
+generated/
+reports/
+
+# Java compiled files
+
+*.class
+
+# Jar / War files
+
+*.jar
+*.war
+*.ear
+
+# Test output
+
+surefire-reports/
+
+# Maven wrapper logs
+
+.mvn/wrapper/maven-wrapper.jar
